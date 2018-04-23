@@ -1,15 +1,17 @@
 <template>
-  <form class="search-field">
+  <form class="search-field" novalidate @submit.prevent="update()">
     <input
       :value="term"
+      id="search-field"
       type="search"
       class="field"
-      @input="input($event.target.value)"
       required
+      @input="input($event.target.value)"
     />
-    <div class="placeholder">
+
+    <label for="search-field" class="placeholder">
       <span id="placeholder">Pesquisar</span>
-    </div>
+    </label>
   </form>
 </template>
 
@@ -34,9 +36,10 @@
     },
     mounted () {
       new Typed('#placeholder', {
-        strings: ['Pesquisar', 'Custas', 'Intimações', 'Cursos', 'ou qualquer serviço ou informação da AASP'],
+        strings: ['Pesquisar', 'Custas', 'Intimações', 'Cursos', 'ou qualquer serviço ou informação da AASP', 'Pesquise'],
         typeSpeed: 30,
-        startDelay: 1000
+        startDelay: 1000,
+        showCursor: false
       });
     },
   };
