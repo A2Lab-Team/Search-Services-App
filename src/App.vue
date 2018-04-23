@@ -1,31 +1,23 @@
 <template>
   <section class="search-container">
-    <input
-      v-model.trim="term"
-      type="search"
-      class="search-field"
-    />
+    <search-field @update="(term) => terms.push(term)" />
+    <ul>
+      <li v-for="(term, index) in terms" :key="index">{{ term }}</li>
+    </ul>
   </section>
 </template>
 
 <script>
+  import SearchField from '@/components/SearchField';
+
   export default {
+    components: { SearchField },
     data () {
       return {
-        term: '',
+        terms: [],
       };
     },
   };
 </script>
 
 <style lang="stylus" src="@/assets/styles/base.styl"></style>
-
-<style lang="stylus">
-  .search-field
-    width: 100%
-    height: 60px
-    padding-left: (@height / 2)
-    padding-right: @padding-left
-    border: 1px solid #000
-    border-radius: @height
-</style>
