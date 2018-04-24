@@ -1,5 +1,5 @@
 <template>
-  <section class="search-container">
+  <section :class="classes">
     <search-field @update="search($event)" />
 
     <ul class="search-results">
@@ -25,7 +25,17 @@
         index: null,
         results: [],
         services: [],
+        isLoading: true,
       };
+    },
+    computed: {
+      classes () {
+        return [
+          'search-container', {
+            '-is-loading': this.isLoading,
+          }
+        ]
+      }
     },
     methods: {
       normalize (term) {
@@ -64,8 +74,35 @@
       });
 
       this.services = services
+      setTimeout(() => this.isLoading = false, 1 * 1000)
     }
   };
 </script>
 
-<style lang="stylus" src="@/assets/styles/base.styl"></style>
+<style lang="stylus">
+  .search-container
+    &
+      display: flex
+      align-items: center
+      flex-direction: column
+      justify-content: center
+      min-height: 100vh
+
+    &::before
+      position: fixed
+      bottom: 0
+      z-index: -1
+      display: block
+      width: 100%
+      height: 100%
+      background-position: bottom right
+      background-repeat: no-repeat
+      background-image: url('~@/assets/images/background.jpg')
+      background-size: cover
+      filter: blur(1px)
+      transition: filter .3s ease
+      content: ''
+
+    &.-is-loading::before
+      filter: blur(5px)
+</style>

@@ -1,3 +1,4 @@
+import '@/assets/styles/base.styl';
 import Vue from 'vue';
 import App from './App';
 
