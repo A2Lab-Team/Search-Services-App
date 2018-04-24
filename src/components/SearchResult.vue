@@ -32,12 +32,15 @@
 <style lang="stylus">
   .search-result
     &
+      box-sizing: border-box
       position: relative
       display: block
-      padding: 16px
+      width: 100%
+      padding: 28px 16px 16px
       background-color: #fff
-      box-shadow: 0 2px  5px 0 rgba(#000, .16),
-                  0 2px 10px 0 rgba(#000, .12)
+      border-radius: 15px
+      box-shadow: 0 30px 40px 0 rgba(#10245e, .2),
+            inset 0 -10px 0 0 rgba(#6775a1, .06)
 
     > .category
       position: absolute
@@ -53,9 +56,18 @@
       font-weight: 400
 
     > .name
+      font-weight: 500
       margin: 0
       margin-bottom: 16px
 
     > .description
+      -webkit-box-orient: vertical
+      box-orient: vertical
+      display: -webkit-box
+      display: box
       margin: 0
+      overflow: hidden
+      -webkit-line-clamp: 6
+      line-clamp: 6
+      text-overflow: ellipsis
 </style>

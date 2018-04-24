@@ -54,14 +54,21 @@
       position: relative
       width: 100%
       height: $search-field-height
+      background-color: #fff
+      border-radius: 0 $search-field-height $search-field-height 0
+      box-shadow: 0 30px 40px 0 rgba(#10245e, .2),
+            inset 0 -10px 0 0 rgba(#6775a1, .06)
+
+    @media screen and (min-width: 480px)
+      border-radius: $search-field-height
 
     > .field
       width: 100%
       height: 100%
       padding-left: $search-field-padding
       padding-right: @padding-left
-      border: 1px solid #000
-      border-radius: $search-field-height
+      border: 0
+      font: inherit
       background-color: transparent
       background-image: none
 
@@ -73,8 +80,8 @@
       top: 50%
       left: $search-field-padding
       right: @left
+      color: #818181
       user-select: none !important
       transform: translateY(-50%)
       transition: opacity .3s ease
-      z-index: -1
 </style>

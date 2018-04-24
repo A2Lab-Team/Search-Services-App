@@ -1,6 +1,6 @@
 <template>
   <section :class="classes">
-    <search-field @update="search($event)" />
+    <search-field class="field" @update="search($event)" />
     <search-results :results="results" />
   </section>
 </template>
@@ -46,11 +46,19 @@
 <style lang="stylus">
   .search-container
     &
+      box-sizing: border-box
       display: flex
       align-items: center
       flex-direction: column
       justify-content: center
       min-height: 100vh
+      padding: 16px 0
+
+    @media screen and (min-width: 480px)
+      padding: 16px 16px
+
+    > .field
+      margin-bottom: 16px
 
     &::before
       position: fixed
@@ -59,11 +67,10 @@
       display: block
       width: 100%
       height: 100%
-      background-position: bottom right
+      background-position: top right
       background-repeat: no-repeat
       background-image: url('~@/assets/images/background.jpg')
       background-size: cover
-      filter: blur(1px)
       transition: filter .3s ease
       content: ''
 
