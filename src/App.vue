@@ -3,9 +3,8 @@
     <search-field @update="search($event)" />
 
     <ul class="search-results">
-      <li class="search-result" v-for="result in results" :key="result.link">
-        <h3>{{ result.name }}</h3>
-        <p>{{ result.description }}</p>
+      <li class="result" v-for="result in results" :key="result.link">
+        <search-result v-bind="result" />
       </li>
     </ul>
   </section>
@@ -13,12 +12,14 @@
 
 <script>
   import CSV from 'parse-csv';
+  import lunr from 'lunr';
+  import database from '@/assets/services.csv';
+  import normalize from 'normalize-text';
   import SearchField from '@/components/SearchField';
-  import elasticlunr from 'elasticlunr';
-  import services from '@/assets/services.csv';
+  import SearchResult from '@/components/SearchResult';
 
   export default {
-    components: { SearchField },
+    components: { SearchField, SearchResult },
     data () {
       return {
         index: null,
@@ -27,28 +28,42 @@
       };
     },
     methods: {
+      normalize (term) {
+        if (!term)
+          return ''
+        const toFuzzy = (term) => term + '~1';
+        const normalized = normalize(term).split(' ').map(toFuzzy).join(' ');
+        return normalized
+      },
       search (term) {
-        const results = this.index.search(term);
+        const results = this.index.search(this.normalize(term));
         this.results = results.map((_) => {
           return this.services.find((service) => service.link === _.ref);
         });
       },
     },
     mounted () {
-      this.services = CSV.toJSON(services, {
+      const services = CSV.toJSON(database, {
         headers: {
           included: true
         }
       });
 
-      this.index = elasticlunr(function () {
-        this.setRef('link');
-        this.addField('name');
-        this.addField('description');
-        this.addField('category');
+      this.index = lunr(function () {
+        this.ref('link');
+        this.field('name', { boost: 3 });
+        this.field('description');
+        this.field('category', { boost: 2 });
+
+        services.forEach((service) => this.add({
+          name: normalize(service.name || ''),
+          description: normalize(service.description || ''),
+          category: normalize(service.category || ''),
+          link: service.link
+        }));
       });
 
-      this.services.map((service) => this.index.addDoc(service));
+      this.services = services
     }
   };
 </script>
